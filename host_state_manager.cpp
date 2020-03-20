@@ -41,6 +41,10 @@ using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 // host-shutdown notifies host of shutdown and that leads to host-stop being
 // called so initiate a host shutdown with the -shutdown target and consider the
 // host shut down when the -stop target is complete
+constexpr auto HOST_STATE_UI_SHUTDOWN_TGT = "obmc-host-ui-shutdown@0.target";
+constexpr auto HOST_STATE_UI_POWERON_TGT = "obmc-host-ui-poweron@0.target";
+constexpr auto HOST_STATE_UI_RESET_TGT = "obmc-host-ui-reset@0.target";
+
 constexpr auto HOST_STATE_SOFT_POWEROFF_TGT = "obmc-host-shutdown@0.target";
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
@@ -52,10 +56,16 @@ constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
 /* Map a transition to it's systemd target */
+/*
 const std::map<server::Host::Transition, std::string> SYSTEMD_TARGET_TABLE = {
     {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
     {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
     {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT}};
+*/
+const std::map<server::Host::Transition, std::string> SYSTEMD_TARGET_TABLE = {
+    {server::Host::Transition::Off, HOST_STATE_UI_SHUTDOWN_TGT},
+    {server::Host::Transition::On, HOST_STATE_UI_POWERON_TGT},
+    {server::Host::Transition::Reboot, HOST_STATE_UI_RESET_TGT}};
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
